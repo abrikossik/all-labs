@@ -1,14 +1,20 @@
-#include <iostream>
+#ifndef HEADER
+#define HEADER
 
-void InputSize(int32_t&);
-void createArray(double*&, int32_t);
-void FillArrayWithRandom(double*&, int32_t, double, double);
-void FillArrayWithKeyboard(double*, int32_t);
-void CheckingArrayBounds(double, double);
-void PrintArray(double*, int32_t);
-void deleteArray(double*&, int32_t);
-double MaxElementInArrayByModule(double*, int32_t);
-double SumBetweenTwoPositiveElements(double*, int32_t);
-double SumBetweenTwoNegativeElements(double*, int32_t);
-double SumBetweenTwoElements(double*, int32_t, int32_t, int32_t);
-void DeleteNumbersWhichAreSmallerXFromArray(double* array, int32_t sizeArray);
+#include <iostream>
+#include <iomanip>
+
+bool InputSizeMatrix(int32_t&);
+void CreateSquareMatrix(int32_t**&, int32_t);
+void CreateMatrix(int32_t**&, int32_t,int32_t);
+void FillSquareMatrix(int32_t**&, int32_t);
+void FillMatrix(int32_t**&, int32_t,int32_t);
+int32_t FindMinAndMaxElements(int32_t**, int32_t, int32_t&, int32_t&);
+int32_t ScalarMultiplication(int32_t**, int32_t, int32_t, int32_t);
+int32_t MinElKForRows(int32_t**, int32_t, int32_t);
+int32_t FindNumberOfStringWithZero(int32_t**, int32_t, int32_t);
+void FindSaddlePointOfMatrix(int32_t**, int32_t, int32_t);
+void PrintMatrix(int32_t**, int32_t);
+void DeleteMatrix(int32_t**&, int32_t);
+
+#endif

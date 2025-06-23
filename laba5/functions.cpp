@@ -1,190 +1,194 @@
-#include <iostream>
 #include "header.h"
-
-void InputSize(int32_t& size)
+bool InputSizeMatrix(int32_t& size)
 {
-	std::cout << "Input size of array ";
+	std::cout << "Input size of matrix \n";
 	std::cin >> size;
 
-	if (size <= 0)
-	{
-		throw std::invalid_argument("Wrong size");
-	}
+	return (size > 0);
 }
 
 
-void createArray(double*& array, int32_t size)
+void CreateSquareMatrix(int32_t**& matrix, int32_t size)
 {
-	array = new double[size];
-}
-
-
-void CheckingArrayBounds(double min, double max)
-{
-	if (min > max)
-	{
-		double temp{ max };
-		max = min;
-		min = temp;
-	}
-	if (min == max)
-	{
-		std::cout << "Bad array bounds";
-		exit(0);
-	}
-	if (max > min)
-	{
-		std::cout << "Min bound = " << min << '\n';
-		std::cout << "Max bound = " << max << '\n';
-	}
-}
-
-
-
-void FillArrayWithRandom(double*& array, int32_t size,double max, double min)
-{
-	srand(static_cast<unsigned int>(time(NULL)));
+	matrix = new int32_t* [size];
 	for (int32_t i{}; i < size; ++i)
 	{
-		array[i] = ((static_cast<double>(rand()) / RAND_MAX) * (max - min)) + min;
+		matrix[i] = new int32_t[size];
 	}
 }
 
 
-void FillArrayWithKeyboard(double* array, int32_t size)
+void CreateMatrix(int32_t**& matrix, int32_t rows,int32_t cols)
 {
+	matrix = new int32_t * [rows];
+	for (int32_t i{}; i < rows; ++i)
+	{
+		matrix[i] = new int32_t[cols];
+	}
+}
+
+
+void FillSquareMatrix(int32_t**& matrix, int32_t size)
+{
+	std::cout << "Input elements of matrix \n";
 	for (int32_t i{}; i < size; ++i)
 	{
-		std::cin >> array[i];
-	}
-}
-
-
-void PrintArray(double* array, int32_t size)
-{
-	for (int32_t i{}; i < size; ++i)
-	{
-		std::cout << array[i] << ' ';
-	}
-	std::cout << std::endl;
-}
-
-
-void deleteArray(double*& array, int32_t size)
-{
-	delete[] array;
-}
-
-
-double MaxElementInArrayByModule(double* array, int32_t size)
-{
-	double maxElements{ abs(array[0]) };
-
-	for (int32_t i{ 1 }; i < size; ++i)
-	{
-		if (maxElements < abs(array[i]))
+		for (int32_t j{}; j < size; ++j)
 		{
-			maxElements = abs(array[i]);
+			std::cin >> matrix[i][j];
 		}
 	}
-	return maxElements;
 }
 
-
-double SumBetweenTwoPositiveElements(double* array, int32_t size)
+void FillMatrix(int32_t**& matr, int32_t rows,int32_t cols)
 {
-	int32_t firstPositiveIndex{ -1 };
-	int32_t secondPositiveIndex{ -1 };
-
-	std::cout << std::endl;
-	
-	for (int32_t i{}; i < size; ++i)
+	std::cout << "Input elements of matrix \n";
+	for (int32_t i{}; i < rows; ++i)
 	{
-		if (array[i] > 0)
+		for (int32_t j{}; j < cols; ++j)
 		{
-			if (firstPositiveIndex == -1)
-			{
-				firstPositiveIndex = i+1;
-			}
-			else if (secondPositiveIndex == -1)
-			{
-				secondPositiveIndex = i-1;
-				break;
-			}
+			std::cin >> matr[i][j];
 		}
 	}
-	if ((firstPositiveIndex == -1) or (secondPositiveIndex == -1) or (firstPositiveIndex > secondPositiveIndex))
-	{
-		return 0;
-	}
-	return SumBetweenTwoElements(array, size, firstPositiveIndex, secondPositiveIndex);
 }
 
 
-double SumBetweenTwoElements(double* array, int32_t size, int32_t firstIndex, int32_t secondIndex)
+int32_t FindMinAndMaxElements(int32_t** matrix, int32_t size, int32_t& maxElements,int32_t& minElements)
 {
-	double sum{};
-	for (; firstIndex <= secondIndex; ++firstIndex)
-	{
-		sum += array[firstIndex];
-	}
-	return sum;
-}
-
-
-double SumBetweenTwoNegativeElements(double* array, int32_t size)
-{
-	std::cout << std::endl;
-	int32_t firstNegativeIndex{ -1 };
-	int32_t secondNegativeIndex{ -1 };
+	int32_t max{matrix[0][0]};
+	int32_t min{matrix[0][0]};
 
 	for (int32_t i{}; i < size; ++i)
 	{
-		if (array[i] < 0)
+		for (int32_t j{}; j < size; ++j)
 		{
-			if (firstNegativeIndex == -1)
+			if (matrix[i][j] >= max)
 			{
-				firstNegativeIndex = i+1;
+				maxElements = j;
+				max = matrix[i][j];
 			}
 			else
 			{
-				secondNegativeIndex = i-1;
+				minElements = i;
+				min = matrix[i][j];
 			}
 		}
 	}
-	if ((firstNegativeIndex == -1) or (secondNegativeIndex == -1) or (firstNegativeIndex > secondNegativeIndex))
-	{
-		return 0;
-	}
-	return SumBetweenTwoElements(array, size, firstNegativeIndex, secondNegativeIndex);
+	return(maxElements, minElements);
 }
 
 
-void DeleteNumbersWhichAreSmallerXFromArray(double* array, int32_t size)
+int32_t ScalarMultiplication(int32_t** matr, int32_t rows, int32_t max, int32_t min)
 {
-	double temp{};
-	double num{};
-	
-	std::cout << "\nInput min number\n";
-	std::cin >> num;
-
-	for (int32_t i{}; i < size - 1; ++i)
+	int32_t result{};
+	for (int32_t i{}; i < rows; ++i)
 	{
-		for (int32_t j{}; j < size - i - 1; ++j)
+		result += matr[min][i] * matr[i][max];
+	}
+	return result;
+}
+
+
+int32_t MinElKForRows(int32_t** matr, int32_t rows, int32_t min)
+{
+	min = INT_MAX;
+	int32_t maxELinRows{};
+
+	for (size_t i{}; i < rows; ++i)
+	{
+		maxELinRows = matr[i][0];
+		for (size_t j{}; j < rows; ++j)
 		{
-			if (array[j] <= num)
+			if (maxELinRows < matr[i][j])
 			{
-				temp = array[j + 1];
-				array[j + 1] = array[j];
-				array[j] = temp;
+				maxELinRows = matr[i][j];
+			}
+		}
+		if (maxELinRows < min)
+		{
+			min = maxELinRows;
+		}
+	}
+
+	return (min+1);
+}
+
+
+int32_t FindNumberOfStringWithZero(int32_t** matr, int32_t rows, int32_t cols)
+{
+	for (size_t i{}; i < rows; ++i)
+	{
+		for (size_t j{}; j < cols; ++j)
+		{
+			if (matr[i][j] == 0)
+			{
+				return (i + 1);
 			}
 		}
 	}
-	for (int32_t i{}; i < size; ++i)
+	return -1;
+}
+
+
+void FindSaddlePointOfMatrix(int32_t** matrix, int32_t rows, int32_t cols)
+{
+	bool found {true};
+
+	for (size_t i{}; i < rows;++i)
 	{
-		if (array[i] < num)
+		int32_t minRowVal = matrix[i][0];
+		int32_t minColIndex = 0;
+
+		for (size_t j{ 1 }; j < cols; ++j)
 		{
-			array[i] = 0;
+			if (matrix[i][j] < minRowVal) 
+			{
+				minRowVal = matrix[i][j];
+				minColIndex = j;
+			}
+		}
+
+		bool isSaddlePoint{ true };
+		
+		for (size_t k{ 0 }; k < rows; ++k) 
+		{
+			if (matrix[k][minColIndex] > minRowVal)
+			{
+				isSaddlePoint = false;
+				break;
+			}
+		}
+
+		if (isSaddlePoint) {
+			std::cout << "String " << i + 1 << ", Rows " << minColIndex + 1 << '\n';
+			found = true;
 		}
 	}
+
+	if (!found) {
+		std::cout << "No one the saddle point.\n";
+	}
+	}
+
+
+void PrintMatrix(int32_t** matrix, int32_t rows)
+{
+	for (int32_t i{}; i < rows; ++i)
+	{
+		for (int32_t j{}; j < rows; ++j)
+		{
+			std::cout << std::setw(6) << matrix[i][j];
+		}
+		std::cout << '\n';
+	}
+}
+
+
+void DeleteMatrix(int32_t**& matrix, int32_t rows)
+{
+	for (int32_t i{}; i < rows; ++i)
+	{
+		delete[] matrix[i];
+	}
+	delete[] matrix;
 }
